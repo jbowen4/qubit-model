@@ -44,9 +44,10 @@ public class Qubit {
 
     public void setValue(String v)
     {
-        if (v.toLowerCase() == "white") {
+        v = v.toLowerCase();
+        if (v.equals("white")) {
             this.value = 0;
-        } else if (v.toLowerCase() == "black") {
+        } else if (v.equals("black")) {
             this.value = 1;
         } else {
             System.out.println("Invalid input. Please enter either white or black");
