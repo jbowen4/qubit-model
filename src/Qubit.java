@@ -23,10 +23,9 @@ public class Qubit {
      */
     public Qubit(String v)
     {
-        v = v.toLowerCase();
-        if (v.equals("white")) {
+        if (v.equals("White")) {
             this.value = 0;
-        } else if (v.equals("black")) {
+        } else if (v.equals("Black")) {
             this.value = 1;
         } else {
             System.out.println("Invalid input. Please enter either white or black");
@@ -44,10 +43,9 @@ public class Qubit {
 
     public void setValue(String v)
     {
-        v = v.toLowerCase();
-        if (v.equals("white")) {
+        if (v.equals("White")) {
             this.value = 0;
-        } else if (v.equals("black")) {
+        } else if (v.equals("Black")) {
             this.value = 1;
         } else {
             System.out.println("Invalid input. Please enter either white or black");
