@@ -1,52 +1,55 @@
-public class Qubit {
-    private float value; // either 0 (white) or 1 (black)
+import java.util.Random;
 
-    /* Default Constructor
-     * Constructor without input arguments
-     * Initialize value to white or |0>
-     */
-    public Qubit(){
+public class Qubit {
+    private float value;
+    private int phase;
+    Random rand = new Random();
+
+    // DOES THE VALUE HAVE TO BE NEGATIVE AND THE PHASE ALSO BE NEGATIVE
+
+    public Qubit()
+    {
         value = 0;
+        phase = 1;
     }
 
-    /* Constructor with input arguments
-     * Initialize value to inputted value
-     */
     public Qubit(float v)
     {
-        this.value = v;
-    }
-
-    /* Constructor with input arguments
-     * allow other ways of specifying the starting value
-     * initialize: "White" is false, "Black" is true
-     */
-    public Qubit(String v)
-    {
-        if (v.equals("White")) {
-            this.value = 0;
-        } else if (v.equals("Black")) {
-            this.value = 1;
+        if (v >= -1 && v <= 1) {
+            this.value = Math.abs(v);
+            this.phase = (v > 0) ? 1 : -1;
         } else {
             System.out.println("Invalid input. Please enter either white or black");
         }
     }
 
+    public Qubit(String v)
+    {
+        if (v.equals("White")) {
+            this.value = 0;
+            this.phase = 1;
+        } else if (v.equals("Black")) {
+            this.value = 1;
+            this.phase = 1;
+        } else {
+            System.out.println("Invalid input. Please enter either white or black");
+        }
+    }
 
-    /* These are standard "setters" and "getters" except that we
-     * are supporting two types for the setter. Fill these in.
-     */
     public void setValue(float v)
     {
-        this.value = v;
+        this.value = Math.abs(v);
+        this.phase = (v > 0) ? 1 : -1;
     }
 
     public void setValue(String v)
     {
         if (v.equals("White")) {
             this.value = 0;
+            this.phase = 1;
         } else if (v.equals("Black")) {
             this.value = 1;
+            this.phase = 1;
         } else {
             System.out.println("Invalid input. Please enter either white or black");
         }
@@ -57,49 +60,74 @@ public class Qubit {
         return this.value;
     }
 
-    /* not
-     * Perform a not gate on the qubit
-     * In week 1, this is only required to flip between 0 and 1
-     * Implement this without a conditional - figure out a
-     * mathematical calculation that will work for either 0 or 1
-     */
-    public void not()
+    public void setPhase(int phase)
     {
-        this.value = (this.value + 1) % 2;
+        this.phase = (phase > 0) ? 1 : -1;
     }
 
-    /* These are methods we implement so that we can use Qubit with
-     * standard operations - like System.out.println and comparison
-     * These are critical for grading, so don't change them!!!
-     */
+    public int getPhase(int phase) // DO NOT UNDERSTAND
+    {
+        int output = (phase > 0) ? 1 : -1;
+        return output;
+    }
+
+    public void not()
+    {
+        this.value = 1 - this.value;
+    }
+
+    public void hgate()
+    {
+        float newValue =(float)((this.phase * this.value) - 0.5);
+        this.phase = (newValue > 0) ? 1 : -1;
+        this.value = Math.abs(newValue);
+    }
+
+    public void swap(Qubit q2)
+    {
+        System.out.println("method not implemented yet");
+    }
+
+    public void cnot(Qubit q2)
+    {
+        System.out.println("method not implemented yet");
+    }
+
+    public int measureValue()
+    {
+        int randint = rand.nextInt(100);
+
+        if (randint <= (this.value * 100) && this.value != 0) {
+            this.value = 1;
+        } else {
+            this.value = 0;
+        }
+        
+        this.phase = 1;
+        return (int)this.value;
+    }
+
     public String toString()
     {
-        // we put the "" before value to make it a String.
         return "" + value;
     }
 
     public static int compare (Object obj1, Object obj2)
     {
-        // first cast to Qubits - we assume we're comparing Qubits
         Qubit q1 = (Qubit) obj1;
         Qubit q2 = (Qubit) obj2;
 
-        // if they are equal within a certain precision
-        // because they are floats, we must put in a fudge factor
         if (((q1.getValue() - q2.getValue()) < 0.01) &&
                 ((q2.getValue() - q1.getValue()) < 0.01) )
         {
-            // obj1 == obj2
             return 0;
         }
         else if (q1.getValue() > q2.getValue())
         {
-            // obj1 > obj2
             return 1;
         }
-        else // if (q1.getValue() < q2.getValue())
+        else
         {
-            // obj1 < obj2
             return -1;
         }
 
