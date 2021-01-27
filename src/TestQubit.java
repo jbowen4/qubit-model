@@ -182,13 +182,13 @@ public class TestQubit
 
         if (Qubit.compare(start, expected) == 0)
         {
-            System.out.println("Qubit setValue("+val+
+            System.out.println("Qubit setPhase("+val+
                     "): Success!");
             return 1;
         }
         else
         {
-            System.out.println("Qubit setValue("+val+
+            System.out.println("Qubit setPhase("+val+
                     "): FAIL!");
             System.out.println("Expected: "+expected);
             System.out.println("Actual: "+start);
@@ -201,18 +201,25 @@ public class TestQubit
     {
         float startPhase, phase;
 
+        if (args.length < 4) {
+            System.out.println("Too few arguments for " + "TestgetPhase: " + args.length);
+            System.out.println("Missing value input");
+            System.out.println("Test FAILED");
+            return 0;
+        }
+
         startPhase = start.getPhase();
         phase = Integer.parseInt(args[3]);
 
         if (Float.compare(start.getPhase(), expected.getPhase()) == 0 && startPhase == phase)
         {
-            System.out.println("Qubit setPhase("+phase+
+            System.out.println("Qubit getPhase("+phase+
                     "): Success!");
             return 1;
         }
         else
         {
-            System.out.println("Qubit setPhase("+phase+
+            System.out.println("Qubit getPhase("+phase+
                     "): FAIL!");
             System.out.println("Expected: "+expected);
             System.out.println("Actual: "+start);
@@ -226,13 +233,13 @@ public class TestQubit
 
         if (Qubit.compare(start, expected) == 0)
         {
-            System.out.println("Qubit setValue("+expected.getValue()+
+            System.out.println("Qubit hgate("+expected.getValue()+
                     "): Success!");
             return 1;
         }
         else
         {
-            System.out.println("Qubit setValue("+expected.getValue()+
+            System.out.println("Qubit hgate("+expected.getValue()+
                     "): FAIL!");
             System.out.println("Expected: "+expected);
             System.out.println("Actual: "+start);
@@ -265,7 +272,7 @@ public class TestQubit
         }
         else
         {
-            System.out.println("Qubit setValue("+second.getValue()+", "+first.getValue()+
+            System.out.println("Qubit swap("+second.getValue()+", "+first.getValue()+
                     "): FAIL!");
             System.out.println("Expected: "+firstExpect+ ", " + secondExpect);
             System.out.println("Actual: "+first.getValue()+ ", " + second.getValue());
@@ -292,13 +299,13 @@ public class TestQubit
 
         if (targetExpect == target.getValue() && controlExpect == control.getValue())
         {
-            System.out.println("Qubit swap("+control.getValue()+", "+target.getValue()+
+            System.out.println("Qubit cnot("+control.getValue()+", "+target.getValue()+
                     "): Success!");
             return 1;
         }
         else
         {
-            System.out.println("Qubit setValue("+control.getValue()+", "+target.getValue()+
+            System.out.println("Qubit cnot("+control.getValue()+", "+target.getValue()+
                     "): FAIL!");
             System.out.println("Expected: "+controlExpect+ ", " + targetExpect);
             System.out.println("Actual: "+control.getValue()+ ", " + target.getValue());
@@ -306,7 +313,32 @@ public class TestQubit
         }
     }
 
-    public static int Testmeasure() {
+    public static int Testmeasure(Qubit start) {
+        int total0 = 0;
+        int total1 = 0;
+
+        float startValue = start.getValue();
+
+        for (int i = 0; i < 100; i = i + 1) {
+            Qubit tester = new Qubit(startValue);
+            if (tester.measureValue() == 1) {
+                total1 = total1 + 1;
+            } else {
+                total0 = total0 + 1;
+            }
+        }
+
+        float average = ((float)total1)/100;
+        double lowerLimit = startValue - (startValue * 0.35);
+        double upperLimit = startValue + (startValue * 0.35);
+
+        if (average >= lowerLimit && average <= upperLimit) {
+            System.out.println("Success: average black result is " + average+ ". It is within 0.35 of expected output value " + start.getValue());
+        }
+
+        System.out.println("For a Qubit with value " + startValue+ ", there were " + total0 + " white results and " + total1+ " black results.");
+
+
         return 1;
     }
 
@@ -371,7 +403,7 @@ public class TestQubit
                 Testcnot(testQubit, expectedQubit, args);
                 break;
             case (10):
-                Testmeasure();
+                Testmeasure(testQubit);
                 break;
             case (11):
                 TesttoBraKet(testQubit);
