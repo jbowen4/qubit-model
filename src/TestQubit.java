@@ -357,18 +357,25 @@ public class TestQubit
                 break;
             case (5):
                 TestsetPhase(testQubit, expectedQubit, args);
+                break;
             case (6):
                 TestgetPhase(testQubit, expectedQubit, args);
+                break;
             case (7):
                 Testhgate(testQubit, expectedQubit);
+                break;
             case (8):
                 Testswap(testQubit, expectedQubit, args);
+                break;
             case (9):
                 Testcnot(testQubit, expectedQubit, args);
+                break;
             case (10):
                 Testmeasure();
+                break;
             case (11):
                 TesttoBraKet(testQubit);
+                break;
             default:
                 System.out.println("Test " + testNumber + " not supported");
         }
