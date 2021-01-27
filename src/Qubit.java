@@ -5,8 +5,6 @@ public class Qubit {
     private int phase;
     Random rand = new Random();
 
-    // DOES THE VALUE HAVE TO BE NEGATIVE AND THE PHASE ALSO BE NEGATIVE
-
     public Qubit()
     {
         value = 0;
@@ -39,7 +37,7 @@ public class Qubit {
     public void setValue(float v)
     {
         this.value = Math.abs(v);
-        this.phase = (v > 0) ? 1 : -1;
+        this.phase = (v >= 0) ? 1 : -1;
     }
 
     public void setValue(String v)
@@ -57,7 +55,7 @@ public class Qubit {
 
     public float getValue()
     {
-        return this.value;
+        return (this.value * this.phase);
     }
 
     public void setPhase(int phase)
@@ -65,10 +63,9 @@ public class Qubit {
         this.phase = (phase > 0) ? 1 : -1;
     }
 
-    public int getPhase(int phase) // DO NOT UNDERSTAND
+    public int getPhase()
     {
-        int output = (phase > 0) ? 1 : -1;
-        return output;
+        return this.phase;
     }
 
     public void not()
@@ -78,19 +75,23 @@ public class Qubit {
 
     public void hgate()
     {
-        float newValue =(float)((this.phase * this.value) - 0.5);
-        this.phase = (newValue > 0) ? 1 : -1;
+        float newValue =(float)(0.5 - (this.phase * this.value));
+        this.phase = (newValue >= 0) ? 1 : -1;
         this.value = Math.abs(newValue);
     }
 
     public void swap(Qubit q2)
     {
-        System.out.println("method not implemented yet");
+        float temp = this.getValue();
+        this.setValue(q2.getValue());
+        q2.setValue(temp);
     }
 
     public void cnot(Qubit q2)
     {
-        System.out.println("method not implemented yet");
+        if (Math.abs(q2.getValue()) == 1){
+            not();
+        }
     }
 
     public int measureValue()
