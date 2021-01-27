@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.Random;
 
 public class Qubit {
@@ -75,7 +76,7 @@ public class Qubit {
 
     public void hgate()
     {
-        float newValue =(float)(0.5 - (this.phase * this.value));
+        float newValue = (float)(0.5 - (this.phase * this.value));
         this.phase = (newValue >= 0) ? 1 : -1;
         this.value = Math.abs(newValue);
     }
@@ -106,6 +107,23 @@ public class Qubit {
         
         this.phase = 1;
         return (int)this.value;
+    }
+
+    public String toBraKet()
+    {
+        if (this.value > 0 && this.value < 1) {
+
+            String blackAmp = String.format( "%.2f", new BigDecimal(Math.sqrt(this.value)).stripTrailingZeros());
+            String whiteAmp = String.format( "%.2f", new BigDecimal(Math.sqrt(1 - this.value)).stripTrailingZeros());
+            char sign = (this.phase == 1) ? '+' : '-';
+
+            String s = whiteAmp + "|0> " + sign + " " + blackAmp + "|1>";
+
+            return s;
+        }
+        else if (this.value == 0) { return "|0>"; }
+        else if (this.value == 1) { return "|1>"; }
+        else { return "There was an error with your qubit value. Please try again."; }
     }
 
     public String toString()
